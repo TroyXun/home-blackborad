@@ -13,6 +13,9 @@ html, body {
     font-size: 100px;
 }
 .day-text {
+    font-size: 20px;
+}
+.day-content, .day-status {
     font-size: 30px;
 }
 .day-time {
@@ -20,6 +23,6 @@ html, body {
 }
 .note {
     margin-top: 24px;
-    font-size: 40px;
+    font-size: 34px;
     text-align: center;
 }

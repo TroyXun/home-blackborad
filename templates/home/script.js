@@ -1,8 +1,8 @@
 $(function () {
     initialize ();
     
-    /** 定时刷新页面 便于调试？？？ */
-    // setTimeout ('refreshPage ()', 10000);
+    /** 定时刷新页面 */
+    setTimeout ('refreshPage ()', 600000);
     
     /** 时钟 */
     setInterval (updateTime, 1000);
@@ -49,7 +49,7 @@ function refreshDay () {
                 var time = new Date (convertTimestamp (data[i]['timestamp']));
                 var content = data[i]['content'].replace(RegExp ('\n', 'g'), '<br>');
                 var id = data[i]['id'];
-                $('.day').append ('<div class="day-item" day-id="' + id + '"><span class="day-text">距离 ' + content + ' 还有 </span><span class="day-time"></span></div>');
+                $('.day').append ('<div class="day-item" day-id="' + id + '"><span class="day-text">距离 </span><span class="day-content">' + content + ' </span><span class="day-status">还有 </span><span class="day-time"></span></div>');
                 updateDayTime (id, time);
             }
         }
@@ -71,6 +71,12 @@ function updateDayTime (id, time) {
     setInterval (function () {
         var nowTime = new Date();
         var leftTime = time - nowTime;
+        if (leftTime < 0) {
+            $('[day-id="' + id + '"] .day-status').html ('已过 ');
+            leftTime = nowTime - time;
+        } else {
+            $('[day-id="' + id + '"] .day-status').html ('还有 ');
+        }
         var days = parseInt (leftTime / 1000 / 60 / 60 / 24);
         var hours = parseInt (leftTime / 1000 / 60 / 60 % 24);
         var minutes = parseInt (leftTime / 1000 / 60 % 60);
