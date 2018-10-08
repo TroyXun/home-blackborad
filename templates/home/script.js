@@ -2,7 +2,7 @@ $(function () {
     initialize ();
     
     /** 定时刷新页面 */
-    setTimeout ('refreshPage ()', 600000);
+    // setTimeout ('refreshPage ()', 600000);
     
     /** 时钟 */
     setInterval (updateTime, 1000);
@@ -12,6 +12,8 @@ $(function () {
     
     /** 定时更新笔记 */
     setInterval (refreshNote, 5000);
+    
+    setInterval (initialize, 600000);
     
     $('#time').click(function () {
         fullScreen ();
@@ -71,6 +73,7 @@ function updateDayTime (id, time) {
     setInterval (function () {
         var nowTime = new Date();
         var leftTime = time - nowTime;
+        console.log (time);
         if (leftTime < 0) {
             $('[day-id="' + id + '"] .day-status').html ('已过 ');
             leftTime = nowTime - time;
@@ -121,16 +124,24 @@ function fullScreen() {
 }
 
 function convertTimestamp (timestamp) {
-    var date = new Date((timestamp * 1000)).toLocaleDateString ();
-    tmp = date.split('\/');
-    if (tmp.length === 1) {
-        return date;
+    timestamp = new Date(timestamp * 1000);
+    var date = timestamp.toLocaleDateString ();
+    temp = date.split('\/');
+    for (var i = 1; i < temp.length; i++) {
+        if (temp[i].length != 2) {
+        temp[i] = '0' + temp[i];
+        }
     }
-    if (tmp[1].length !== 2) {
-        tmp[1] = '0' + tmp[1];
+    date = temp.join('-');
+    
+    var time = timestamp.getHours() + ':' + timestamp.getMinutes() + ':' + timestamp.getSeconds();
+    temp = time.split(':');
+    for (var i = 0; i < temp.length; i++) {
+        if (temp[i].length != 2) {
+        temp[i] = '0' + temp[i];
+        }
     }
-    if (tmp[2].length !== 2) {
-        tmp[2] = '0' + tmp[2];
-    }
-    return tmp.join('/');
+    time = temp.join(':');
+    
+    return date + ' ' + time;
 }
